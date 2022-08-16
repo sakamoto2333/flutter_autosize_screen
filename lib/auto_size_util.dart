@@ -1,6 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+// import 'binding.dart';
+
+export 'binding.dart';
 
 class AutoSizeUtil {
   static double _devicePixelRatio = 3.0;
@@ -25,9 +28,9 @@ class AutoSizeUtil {
 
   /// 根据设置 的 宽度 来得到 devicePixelRatio
   static double getDevicePixelRatio() {
-    var originalSize = window.physicalSize / window.devicePixelRatio;
-    var originalWidth = originalSize.width;
-    var originalHeight = originalSize.height;
+    final originalSize = window.physicalSize / window.devicePixelRatio;
+    final originalWidth = originalSize.width;
+    final originalHeight = originalSize.height;
     if (originalHeight > originalWidth) {
       // 竖屏
       _devicePixelRatio =
@@ -44,9 +47,9 @@ class AutoSizeUtil {
   static Size getSize() {
     // 如果是横屏就已宽度为基准
 
-    var originalSize = window.physicalSize / window.devicePixelRatio;
-    var originalWidth = originalSize.width;
-    var originalHeight = originalSize.height;
+    final originalSize = window.physicalSize / window.devicePixelRatio;
+    final originalWidth = originalSize.width;
+    final originalHeight = originalSize.height;
     if (originalHeight > originalWidth) {
       // 竖屏
       _screenHeight = window.physicalSize.height / getDevicePixelRatio();
@@ -62,25 +65,42 @@ class AutoSizeUtil {
     }
   }
 
-  static Size getScreenSize() {
-    return _screenSize;
-  }
+  static Size getScreenSize() => _screenSize;
 
   static Widget appBuilder(BuildContext context, Widget? widget) {
-    EdgeInsets viewInsets =  MediaQuery.of(context).viewInsets;
-    EdgeInsets pading =  MediaQuery.of(context).padding;
-    EdgeInsets viewPadding =  MediaQuery.of(context).viewPadding;
-    var adapterEdge=  EdgeInsets.fromLTRB(viewInsets.left, viewInsets.top, viewInsets.right,getRealSize(viewInsets.bottom));
-    var adapterPadding=  EdgeInsets.fromLTRB(pading.left, getRealSize(pading.top), pading.right,getRealSize(pading.bottom));
-    var adapterViewPadding=  EdgeInsets.fromLTRB(viewPadding.left, getRealSize(viewPadding.top), viewPadding.right,getRealSize(viewPadding.bottom));
+    final viewInsets = MediaQuery.of(context).viewInsets;
+    final pading = MediaQuery.of(context).padding;
+    final viewPadding = MediaQuery.of(context).viewPadding;
+    final adapterEdge = EdgeInsets.fromLTRB(
+      viewInsets.left,
+      viewInsets.top,
+      viewInsets.right,
+      getRealSize(viewInsets.bottom),
+    );
+    final adapterPadding = EdgeInsets.fromLTRB(
+      pading.left,
+      getRealSize(pading.top),
+      pading.right,
+      getRealSize(pading.bottom),
+    );
+    final adapterViewPadding = EdgeInsets.fromLTRB(
+      viewPadding.left,
+      getRealSize(viewPadding.top),
+      viewPadding.right,
+      getRealSize(viewPadding.bottom),
+    );
 
     return MediaQuery(
       // 这里如果设置 textScaleFactor = 1.0 ，就不会随着系统字体大小去改变了
       data: MediaQuery.of(context).copyWith(
-          size: Size(AutoSizeUtil._screenWidth, AutoSizeUtil._screenHeight),
-          devicePixelRatio: AutoSizeUtil._devicePixelRatio,
-          textScaleFactor:
-              _autoTextSize ? MediaQuery.of(context).textScaleFactor : 1.0,viewInsets:adapterEdge,padding: adapterPadding,viewPadding: adapterViewPadding),
+        size: Size(AutoSizeUtil._screenWidth, AutoSizeUtil._screenHeight),
+        devicePixelRatio: AutoSizeUtil._devicePixelRatio,
+        textScaleFactor:
+            _autoTextSize ? MediaQuery.of(context).textScaleFactor : 1.0,
+        viewInsets: adapterEdge,
+        padding: adapterPadding,
+        viewPadding: adapterViewPadding,
+      ),
       child: _adapterTheme(context, widget),
     );
   }
@@ -90,8 +110,7 @@ class AutoSizeUtil {
     return size / (_devicePixelRatio / window.devicePixelRatio);
   }
 
-  static _adapterTheme(BuildContext context, Widget? widget) {
-
+  static Theme _adapterTheme(BuildContext context, Widget? widget) {
     return Theme(
       data: Theme.of(context).copyWith(),
       child: widget!,
