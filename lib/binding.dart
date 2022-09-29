@@ -72,23 +72,45 @@ class AutoWidgetsFlutterBinding extends WidgetsFlutterBinding {
 
   void _handlePointerEvent(PointerEvent event) {
     assert(!locked);
-    HitTestResult? result;
-    if (event is PointerDownEvent) {
+    HitTestResult? hitTestResult;
+    if (event is PointerDownEvent ||
+        event is PointerSignalEvent ||
+        event is PointerHoverEvent ||
+        event is PointerPanZoomStartEvent) {
       assert(!_hitTests.containsKey(event.pointer));
-      result = HitTestResult();
-      hitTest(result, event.position);
-      _hitTests[event.pointer] = result;
+      hitTestResult = HitTestResult();
+      hitTest(hitTestResult, event.position);
+      if (event is PointerDownEvent || event is PointerPanZoomStartEvent) {
+        _hitTests[event.pointer] = hitTestResult;
+      }
       assert(() {
-        if (debugPrintHitTestResults) debugPrint('$event: $result');
+        if (debugPrintHitTestResults) {
+          debugPrint('$event: $hitTestResult');
+        }
         return true;
       }());
-    } else if (event is PointerUpEvent || event is PointerCancelEvent) {
-      result = _hitTests.remove(event.pointer);
-    } else if (event.down) {
-      result = _hitTests[event.pointer];
-    } else {
-      return; // We currently ignore add, remove, and hover move events.
+    } else if (event is PointerUpEvent ||
+        event is PointerCancelEvent ||
+        event is PointerPanZoomEndEvent) {
+      hitTestResult = _hitTests.remove(event.pointer);
+    } else if (event.down || event is PointerPanZoomUpdateEvent) {
+      // Because events that occur with the pointer down (like
+      // [PointerMoveEvent]s) should be dispatched to the same place that their
+      // initial PointerDownEvent was, we want to re-use the path we found when
+      // the pointer went down, rather than do hit detection each time we get
+      // such an event.
+      hitTestResult = _hitTests[event.pointer];
     }
-    dispatchEvent(event, result);
+    assert(() {
+      if (debugPrintMouseHoverEvents && event is PointerHoverEvent) {
+        debugPrint('$event');
+      }
+      return true;
+    }());
+    if (hitTestResult != null ||
+        event is PointerAddedEvent ||
+        event is PointerRemovedEvent) {
+      dispatchEvent(event, hitTestResult);
+    }
   }
 }
