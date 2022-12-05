@@ -10,6 +10,7 @@ import 'auto_size_util.dart';
 
 void runAutoApp(Widget app) {
   AutoWidgetsFlutterBinding.ensureInitialized()
+    // ignore: invalid_use_of_protected_member
     ..scheduleAttachRootWidget(app)
     ..scheduleWarmUpFrame();
 }

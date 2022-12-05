@@ -28,6 +28,8 @@ class AutoSizeUtil {
 
   /// 根据设置 的 宽度 来得到 devicePixelRatio
   static double getDevicePixelRatio() {
+    // Android 在个别情况(可能是Android 12的启动遮罩层)下启动时会返回空Size
+    if (window.physicalSize.isEmpty) return _devicePixelRatio;
     final originalSize = window.physicalSize / window.devicePixelRatio;
     final originalWidth = originalSize.width;
     final originalHeight = originalSize.height;
