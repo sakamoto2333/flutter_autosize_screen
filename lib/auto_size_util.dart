@@ -70,27 +70,12 @@ class AutoSizeUtil {
   static Size getScreenSize() => _screenSize;
 
   static Widget appBuilder(BuildContext context, Widget? widget) {
-    // final viewInsets = MediaQuery.of(context).viewInsets;
-    // final pading = MediaQuery.of(context).padding;
-    // final viewPadding = MediaQuery.of(context).viewPadding;
-    // final adapterEdge = EdgeInsets.fromLTRB(
-    //   viewInsets.left,
-    //   viewInsets.top,
-    //   viewInsets.right,
-    //   getRealSize(viewInsets.bottom),
-    // );
-    // final adapterPadding = EdgeInsets.fromLTRB(
-    //   pading.left,
-    //   getRealSize(pading.top),
-    //   pading.right,
-    //   getRealSize(pading.bottom),
-    // );
-    // final adapterViewPadding = EdgeInsets.fromLTRB(
-    //   viewPadding.left,
-    //   getRealSize(viewPadding.top),
-    //   viewPadding.right,
-    //   getRealSize(viewPadding.bottom),
-    // );
+    final viewInsets = MediaQuery.of(context).viewInsets;
+    final padding = MediaQuery.of(context).padding;
+    final viewPadding = MediaQuery.of(context).viewPadding;
+    final adapterEdge = getRealEdgeInsets(viewInsets);
+    final adapterPadding = getRealEdgeInsets(padding);
+    final adapterViewPadding = getRealEdgeInsets(viewPadding);
 
     return MediaQuery(
       // 这里如果设置 textScaleFactor = 1.0 ，就不会随着系统字体大小去改变了
@@ -99,9 +84,9 @@ class AutoSizeUtil {
         devicePixelRatio: AutoSizeUtil._devicePixelRatio,
         textScaleFactor:
             _autoTextSize ? MediaQuery.of(context).textScaleFactor : 1.0,
-        // viewInsets: adapterEdge,
-        // padding: adapterPadding,
-        // viewPadding: adapterViewPadding,
+        viewInsets: adapterEdge,
+        padding: adapterPadding,
+        viewPadding: adapterViewPadding,
       ),
       child: _adapterTheme(context, widget),
     );
@@ -110,6 +95,10 @@ class AutoSizeUtil {
   /// 获取真正的大小，比如 kToolbarHeight kBottomNavigationBarHeight
   static double getRealSize(double size) {
     return size / (_devicePixelRatio / window.devicePixelRatio);
+  }
+
+  static EdgeInsets getRealEdgeInsets(EdgeInsets edgeInsets) {
+    return edgeInsets / (_devicePixelRatio / window.devicePixelRatio);
   }
 
   static Theme _adapterTheme(BuildContext context, Widget? widget) {
