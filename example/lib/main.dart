@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_autosize_screen/auto_size_util.dart';
 
@@ -57,7 +55,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final originalSize = window.physicalSize / window.devicePixelRatio;
+    final view = View.of(context);
+    final originalSize = view.physicalSize / view.devicePixelRatio;
     final nowDevicePixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     return Scaffold(
@@ -136,8 +135,8 @@ class _HomePageState extends State<HomePage> {
                 height: 50,
               ),
               Text('原始的 size: $originalSize '),
-              Text('原始的 分辨率: ${window.physicalSize} '),
-              Text('原始的 devicePixelRatio: ${window.devicePixelRatio} '),
+              Text('原始的 分辨率: ${view.physicalSize} '),
+              Text('原始的 devicePixelRatio: ${view.devicePixelRatio} '),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 20),
                 alignment: Alignment.center,

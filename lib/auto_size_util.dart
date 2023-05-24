@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-// import 'binding.dart';
 
 export 'binding.dart';
 
@@ -18,6 +17,8 @@ class AutoSizeUtil {
 
   static bool _autoTextSize = true;
 
+  static FlutterView get view => PlatformDispatcher.instance.views.first;
+
   /// 如果是横屏 就以高度为基准
   /// 如果是竖屏 就以宽度为基准
   /// 是否随着系统的文字大小而改变，默认是改变
@@ -29,18 +30,18 @@ class AutoSizeUtil {
   /// 根据设置 的 宽度 来得到 devicePixelRatio
   static double getDevicePixelRatio() {
     // Android 在个别情况(可能是Android 12的启动遮罩层)下启动时会返回空Size
-    if (window.physicalSize.isEmpty) return _devicePixelRatio;
-    final originalSize = window.physicalSize / window.devicePixelRatio;
+    if (view.physicalSize.isEmpty) return _devicePixelRatio;
+    final originalSize = view.physicalSize / view.devicePixelRatio;
     final originalWidth = originalSize.width;
     final originalHeight = originalSize.height;
     if (originalHeight > originalWidth) {
       // 竖屏
       _devicePixelRatio =
-          window.physicalSize.width / AutoSizeUtil._screenStandard;
+          view.physicalSize.width / AutoSizeUtil._screenStandard;
     } else {
       // 横屏
       _devicePixelRatio =
-          window.physicalSize.height / AutoSizeUtil._screenStandard;
+          view.physicalSize.height / AutoSizeUtil._screenStandard;
     }
     return _devicePixelRatio;
   }
@@ -48,19 +49,18 @@ class AutoSizeUtil {
   /// 根据设置的宽度，来得到对应的高度
   static Size getSize() {
     // 如果是横屏就已宽度为基准
-
-    final originalSize = window.physicalSize / window.devicePixelRatio;
+    final originalSize = view.physicalSize / view.devicePixelRatio;
     final originalWidth = originalSize.width;
     final originalHeight = originalSize.height;
     if (originalHeight > originalWidth) {
       // 竖屏
-      _screenHeight = window.physicalSize.height / getDevicePixelRatio();
+      _screenHeight = view.physicalSize.height / getDevicePixelRatio();
       _screenWidth = _screenStandard;
       _screenSize = Size(_screenStandard, _screenHeight);
       return _screenSize;
     } else {
       // 横屏
-      _screenWidth = window.physicalSize.width / getDevicePixelRatio();
+      _screenWidth = view.physicalSize.width / getDevicePixelRatio();
       _screenHeight = _screenStandard;
       _screenSize = Size(_screenWidth, _screenStandard);
       return _screenSize;
@@ -94,11 +94,11 @@ class AutoSizeUtil {
 
   /// 获取真正的大小，比如 kToolbarHeight kBottomNavigationBarHeight
   static double getRealSize(double size) {
-    return size / (_devicePixelRatio / window.devicePixelRatio);
+    return size / (_devicePixelRatio / view.devicePixelRatio);
   }
 
   static EdgeInsets getRealEdgeInsets(EdgeInsets edgeInsets) {
-    return edgeInsets / (_devicePixelRatio / window.devicePixelRatio);
+    return edgeInsets / (_devicePixelRatio / view.devicePixelRatio);
   }
 
   static Theme _adapterTheme(BuildContext context, Widget? widget) {

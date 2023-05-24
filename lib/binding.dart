@@ -9,9 +9,10 @@ import 'package:flutter/rendering.dart';
 import 'auto_size_util.dart';
 
 void runAutoApp(Widget app) {
-  AutoWidgetsFlutterBinding.ensureInitialized()
+  final binding = AutoWidgetsFlutterBinding.ensureInitialized();
+  binding
     // ignore: invalid_use_of_protected_member
-    ..scheduleAttachRootWidget(app)
+    ..scheduleAttachRootWidget(binding.wrapWithDefaultView(app))
     ..scheduleWarmUpFrame();
 }
 
@@ -35,7 +36,7 @@ class AutoWidgetsFlutterBinding extends WidgetsFlutterBinding {
   @override
   void initInstances() {
     super.initInstances();
-    window.onPointerDataPacket = _handlePointerDataPacket;
+    platformDispatcher.onPointerDataPacket = _handlePointerDataPacket;
   }
 
   @override
