@@ -49,9 +49,10 @@ class AutoWidgetsFlutterBinding extends WidgetsFlutterBinding {
 
   void _handlePointerDataPacket(PointerDataPacket packet) {
     _pendingPointerEvents.addAll(PointerEventConverter.expand(
-        packet.data,
-        // 适配事件的转换比率,采用我们修改的
-        AutoSizeUtil.getDevicePixelRatio()));
+      packet.data,
+      // 适配事件的转换比率,采用我们修改的
+      AutoSizeUtil.getDevicePixelRatio,
+    ));
     if (!locked) _flushPointerEventQueue();
   }
 
@@ -81,7 +82,7 @@ class AutoWidgetsFlutterBinding extends WidgetsFlutterBinding {
         event is PointerPanZoomStartEvent) {
       assert(!_hitTests.containsKey(event.pointer));
       hitTestResult = HitTestResult();
-      hitTest(hitTestResult, event.position);
+      hitTestInView(hitTestResult, event.position, event.viewId);
       if (event is PointerDownEvent || event is PointerPanZoomStartEvent) {
         _hitTests[event.pointer] = hitTestResult;
       }
