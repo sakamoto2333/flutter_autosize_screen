@@ -11,13 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Autosize Demo',
       builder: AutoSizeUtil.appBuilder,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Scaffold(
+      home: Scaffold(
         body: HomePage(),
       ),
     );

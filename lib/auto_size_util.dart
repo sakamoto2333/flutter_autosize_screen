@@ -82,8 +82,9 @@ class AutoSizeUtil {
       data: MediaQuery.of(context).copyWith(
         size: Size(AutoSizeUtil._screenWidth, AutoSizeUtil._screenHeight),
         devicePixelRatio: AutoSizeUtil._devicePixelRatio,
-        textScaleFactor:
-            _autoTextSize ? MediaQuery.of(context).textScaleFactor : 1.0,
+        textScaler: _autoTextSize
+            ? MediaQuery.of(context).textScaler
+            : TextScaler.noScaling,
         viewInsets: adapterEdge,
         padding: adapterPadding,
         viewPadding: adapterViewPadding,

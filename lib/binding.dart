@@ -25,7 +25,7 @@ class AutoWidgetsFlutterBinding extends WidgetsFlutterBinding {
   static WidgetsBinding? _instance;
 
   @override
-  ViewConfiguration createViewConfiguration() {
+  ViewConfiguration createViewConfigurationFor(RenderView renderView) {
     return ViewConfiguration(
       size: AutoSizeUtil.getSize(),
       devicePixelRatio: AutoSizeUtil.getDevicePixelRatio(),
