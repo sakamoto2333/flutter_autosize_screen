@@ -46,8 +46,12 @@ class AutoSizeUtil {
     return _devicePixelRatio;
   }
 
+  static BoxConstraints getPhysicalConstraints() {
+    return BoxConstraints.fromViewConstraints(view.physicalConstraints);
+  }
+
   /// 根据设置的宽度，来得到对应的高度
-  static Size getSize() {
+  static BoxConstraints getLogicalConstraints() {
     // 如果是横屏就已宽度为基准
     final originalSize = view.physicalSize / view.devicePixelRatio;
     final originalWidth = originalSize.width;
@@ -57,13 +61,13 @@ class AutoSizeUtil {
       _screenHeight = view.physicalSize.height / getDevicePixelRatio();
       _screenWidth = _screenStandard;
       _screenSize = Size(_screenStandard, _screenHeight);
-      return _screenSize;
+      return _screenSize.constraints;
     } else {
       // 横屏
       _screenWidth = view.physicalSize.width / getDevicePixelRatio();
       _screenHeight = _screenStandard;
       _screenSize = Size(_screenWidth, _screenStandard);
-      return _screenSize;
+      return _screenSize.constraints;
     }
   }
 
@@ -106,6 +110,17 @@ class AutoSizeUtil {
     return Theme(
       data: Theme.of(context).copyWith(),
       child: widget!,
+    );
+  }
+}
+
+extension on Size {
+  BoxConstraints get constraints {
+    return BoxConstraints(
+      maxHeight: height,
+      minHeight: 0,
+      maxWidth: width,
+      minWidth: 0,
     );
   }
 }

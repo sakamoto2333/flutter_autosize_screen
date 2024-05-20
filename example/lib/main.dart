@@ -128,11 +128,26 @@ class _HomePageState extends State<HomePage> {
                   style: _style,
                 ),
               ),
-              const SizedBox(
-                height: 50,
-              ),
-              Text('原始的 size: $originalSize '),
-              Text('原始的 分辨率: ${view.physicalSize} '),
+              const SizedBox(height: 20),
+              Wrap(children: [
+                OutlinedButton(
+                  onPressed: () {},
+                  child: const Text('按钮'),
+                ),
+                const SizedBox(width: 20),
+                FilledButton(
+                  onPressed: () {},
+                  child: const Text('按钮'),
+                ),
+                const SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('按钮'),
+                ),
+              ]),
+              const SizedBox(height: 20),
+              Text('原始的 逻辑像素: $originalSize '),
+              Text('原始的 物理像素: ${view.physicalSize} '),
               Text('原始的 devicePixelRatio: ${view.devicePixelRatio} '),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 20),
@@ -141,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                 height: 10,
                 color: Colors.grey,
               ),
-              Text('更改后 size: ${MediaQuery.of(context).size}  '),
+              Text('更改后 逻辑像素: ${MediaQuery.of(context).size}  '),
               Text('更改后 devicePixelRatio: $nowDevicePixelRatio'),
             ],
           ),
