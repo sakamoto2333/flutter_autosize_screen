@@ -74,10 +74,10 @@ class AutoSizeUtil {
   static Size getScreenSize() => _screenSize;
 
   static Widget appBuilder(BuildContext context, Widget? widget) {
-    // final viewInsets = MediaQuery.of(context).viewInsets;
+    final viewInsets = MediaQuery.of(context).viewInsets;
     // final padding = MediaQuery.of(context).padding;
     // final viewPadding = MediaQuery.of(context).viewPadding;
-    // final adapterEdge = getRealEdgeInsets(viewInsets);
+    final adapterEdge = getRealEdgeInsets(viewInsets);
     // final adapterPadding = getRealEdgeInsets(padding);
     // final adapterViewPadding = getRealEdgeInsets(viewPadding);
 
@@ -89,7 +89,7 @@ class AutoSizeUtil {
         textScaler: _autoTextSize
             ? MediaQuery.of(context).textScaler
             : TextScaler.noScaling,
-        // viewInsets: adapterEdge,
+        viewInsets: adapterEdge,
         // padding: adapterPadding,
         // viewPadding: adapterViewPadding,
       ),
